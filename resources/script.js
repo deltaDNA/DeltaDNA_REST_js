@@ -1,5 +1,5 @@
 //settings
-var url = "http://127.0.0.1:8080";
+var url = "http://127.0.0.1:8080"; //"http://collect4792jmprb.deltadna.net/collect/api/22079697190426055695055037414340";
 var userID;
 var sessionID;
 var baseEventObject;
@@ -16,8 +16,9 @@ function generateUUID() {
 };
 
 function sendEventList() {
-  var el = {};
-  el["eventList"]=eventList
+  var el = {
+    "eventList": eventList
+  };
   $.ajax({
     type: "POST",
     url: url,
@@ -32,78 +33,87 @@ function sendEventList() {
   });
 };
 
-
 function startDDNA() {
   var sendNewPlayerFlag = 0;
   var sendClientDeviceFlag = 0;
   var sendGameStartedFlag = 0;
   if (localStorage.getItem('userID') != null) {
+    console.log('existing userId found');
     userID = localStorage.getItem('userID');
   } else {
+    console.log('new user generated');
     userID = generateUUID();
     localStorage.setItem('userID', userID);
     sendNewPlayerFlag = 1;
     //todo send newplayer event
   }
+  console.log('UserID : ' + userID);
   if (sessionStorage.getItem('sessionID') != null) {
-    sessionID = localStorage.getItem('sessionID');
+    console.log('existing sessionID found');
+    sessionID = sessionStorage.getItem('sessionID');
   } else {
+    console.log('new session generated');
     sessionID = generateUUID();
-    localStorage.setItem('sessionID', sessionID);
+    sessionStorage.setItem('sessionID', sessionID);
     sendGameStartedFlag = 1;
     sendClientDeviceFlag = 1;
     //todo send clientDevice and gameStarted event
   }
-  console.log('UserID : ' + userID);
   console.log('sessionID :' + sessionID);
   jsonString = '{"userID":"' + userID + '",' +
     '"sessionID":"' + sessionID + '",' +
     '"eventParams":{' +
     '"platform":"WEB"}}';
   baseEventObject = JSON.parse(jsonString);
-  var newPlayerEvent = $.extend(true, {}, baseEventObject);
-  var clientDeviceEvent = $.extend(true, {}, baseEventObject);
-  var gameStartedEvent = $.extend(true, {}, baseEventObject);
-  if (sendNewPlayerFlag){
+  if (sendNewPlayerFlag) {
+    var newPlayerEvent = $.extend(true, {}, baseEventObject);
     console.log("sendNewplayer");
-      newPlayerEvent["eventName"]='newPlayer';
-      eventList.push(newPlayerEvent);
+    newPlayerEvent["eventName"] = 'newPlayer';
+    eventList.push(newPlayerEvent);
   };
-  if (clientDeviceEvent){
+
+  if (sendClientDeviceFlag) {
+    var clientDeviceEvent = $.extend(true, {
+      "eventName": "clientDevice"
+    }, baseEventObject);
     console.log("clientDeviceEvent");
-
-      clientDeviceEvent["eventName"]='clientDevice';
-      eventList.push(clientDeviceEvent);
+    eventList.push(clientDeviceEvent);
   };
-  if (gameStartedEvent){
+  if (sendGameStartedFlag) {
+    var gameStartedEvent = $.extend(true, {}, baseEventObject);
     console.log("gameStartedEvent");
-
-      gameStartedEvent["eventName"]='gameStarted';
-      eventList.push(gameStartedEvent);
+    gameStartedEvent["eventName"] = 'gameStarted';
+    eventList.push(gameStartedEvent);
   };
-  console.log(eventList);
   console.log(eventList);
   console.log(JSON.stringify(eventList));
 
   sendEventList();
 };
 
-
-
-
 $(document).ready(function() {
-  startDDNA();
   //localStorage.setItem('userID', userID);
   //sessionStorage.setItem('sessionID', sessionID);
-
-  $("#button1").click(function() {
-    alert("Hello, world!");
+  $("#StopSDK").click(function() {
+    sessionStorage.clear();
   });
 
-  $("#button2").click(function() {
-    console.log(baseObject);
-    console.log(JSON.parse(baseEventObject));
-    sendEventList(baseObject);
+  $("#newUser").click(function() {
+    localStorage.clear();
+  });
+
+
+  $("#StartSDK").click(function() {
+    startDDNA();
+  });
+
+  $("#SendSimpleEvent").click(function() {
+    var Event = $.extend(true, {}, baseEventObject);
+    Event['eventName'] = 'options';
+    Event['eventParams']['action'] = 'open';
+    Event['eventParams']['option'] = 'menu';
+    eventList.push(Event);
+    sendEventList();
   });
 
 });
