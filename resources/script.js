@@ -37,10 +37,8 @@ function startDDNA() {
   var sendNewPlayerFlag = 0;
   var sendClientDeviceFlag = 0;
   var sendGameStartedFlag = 0;
-  if (localStorage.getItem('userID') != null) {
-    console.log('existing userId found');
-    userID = localStorage.getItem('userID');
-  } else {
+  userID = localStorage.getItem('userID');
+  if (userID == null){
     console.log('new user generated');
     userID = generateUUID();
     localStorage.setItem('userID', userID);
@@ -48,10 +46,8 @@ function startDDNA() {
     //todo send newplayer event
   }
   console.log('UserID : ' + userID);
-  if (sessionStorage.getItem('sessionID') != null) {
-    console.log('existing sessionID found');
-    sessionID = sessionStorage.getItem('sessionID');
-  } else {
+  sessionID = sessionStorage.getItem('sessionID');
+  if (sessionID == null) {
     console.log('new session generated');
     sessionID = generateUUID();
     sessionStorage.setItem('sessionID', sessionID);
@@ -60,7 +56,7 @@ function startDDNA() {
     //todo send clientDevice and gameStarted event
   }
   console.log('sessionID :' + sessionID);
-  jsonString = '{"userID":"' + userID + '",' +
+  var jsonString = '{"userID":"' + userID + '",' +
     '"sessionID":"' + sessionID + '",' +
     '"eventParams":{' +
     '"platform":"WEB"}}';
@@ -70,7 +66,7 @@ function startDDNA() {
     console.log("sendNewplayer");
     newPlayerEvent["eventName"] = 'newPlayer';
     eventList.push(newPlayerEvent);
-  };
+  }
 
   if (sendClientDeviceFlag) {
     var clientDeviceEvent = $.extend(true, {
@@ -78,13 +74,13 @@ function startDDNA() {
     }, baseEventObject);
     console.log("clientDeviceEvent");
     eventList.push(clientDeviceEvent);
-  };
+  }
   if (sendGameStartedFlag) {
     var gameStartedEvent = $.extend(true, {}, baseEventObject);
     console.log("gameStartedEvent");
     gameStartedEvent["eventName"] = 'gameStarted';
     eventList.push(gameStartedEvent);
-  };
+  }
   console.log(eventList);
   console.log(JSON.stringify(eventList));
 
