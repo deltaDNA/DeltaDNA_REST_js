@@ -5,29 +5,26 @@ body {
   padding: 20px;
   width: 600px;
   text-align: center;
-  font-family: ProximaNova-Regular;
+  font-family: 'Lato', sans-serif;
   font-size: 23px;
   color: #000000;
   letter-spacing: 1px;
   line-height: 28px;
 }
-
 .bold_txt {
-  font-family: ProximaNova-Semibold;
+  font-family: proxima-nova;
   font-size: 23px;
   color: #000000;
   letter-spacing: 1px;
   line-height: 28px;
 }
-
 .txt {
-  font-family: ProximaNova-Regular;
+  font-family: 'Lato', sans-serif;
   font-size: 23px;
   color: #000000;
   letter-spacing: 1px;
   line-height: 28px;
 }
-
 .btn {
   float: left;
   padding: 15px 25px;
@@ -39,11 +36,9 @@ body {
   border: none;
   cursor: pointer;
 }
-
 .blue {
   background: #29ACDE;
 }
-
 .btn_txt {
   font-family: ProximaNova-Bold;
   font-size: 12px;

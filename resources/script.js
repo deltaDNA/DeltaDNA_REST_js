@@ -33,12 +33,12 @@ var sendEventList = _.debounce(function() {
       eventList: recordedEvents
     }),
     success: function() {
-      console.log('success');
+      console.log('Events successfully sent');
     },
     error: function() {
       //there was an error sending the events, so we add the events back to the eventList.
       eventList = $.extend(eventList, recordedEvents)
-      console.log('error', arguments)
+      console.log('Error sending events, will retry on next sendEvents()', arguments)
     }
   });
 }, 500);
@@ -48,7 +48,7 @@ function getDefaults() {
     userID: getUser(),
     sessionID: getSession(),
     eventParams: {
-      platform: 'web'
+      platform: 'WEB'
     }
   };
 }
@@ -128,7 +128,7 @@ $(document).ready(function() {
 
   $('#RecordSimpleEvent').click(function() {
     var event = {
-      eventName: 'option',
+      eventName: 'options',
       eventParams: {
         action: 'open',
         option: 'menu'
@@ -141,53 +141,43 @@ $(document).ready(function() {
     var event = {
       eventName: 'transaction',
       eventParams: {
-          transactionName: "IAP - Large Treasure Chest",
-          transactionID: "47891208312996456524019-178.149.115.237:51787",
-          transactorID: "62.212.91.84:15116",
-          productID: "4019",
-          transactionServer: "APPLE",
-          transactionReceipt: "ewok9Ja81............991KS==",
-          transactionType: "PURCHASE",
-          productsReceived: {
-              virtualCurrencies: [
-                  {
-                      virtualCurrency: {
-                          virtualCurrencyName: "Gold",
-                          virtualCurrencyType: "PREMIUM",
-                          virtualCurrencyAmount: 100
-                      }
-                  }
-              ],
-              items: [
-                  {
-                      item: {
-                          itemName: "Golden Battle Axe",
-                          itemType: "Weapon",
-                          itemAmount: 1
-                      }
-                  },
-                  {
-                      item: {
-                          itemName: "Mighty Flaming Sword of the First Age",
-                          itemType: "Legendary Weapon",
-                          itemAmount: 1
-                      }
-                  },
-                  {
-                      item: {
-                          itemName: "Jewel Encrusted Shield",
-                          itemType: "Armour",
-                          itemAmount: 1
-                      }
-                  }
-              ]
-          },
-          productsSpent: {
-              realCurrency: {
-                  realCurrencyType: "USD",
-                  realCurrencyAmount: 499
-              }
+        action: "purchase",
+        transactionName: "IAP - Large Treasure Chest",
+        productID: "4019",
+        productsReceived: {
+          virtualCurrencies: [{
+            virtualCurrency: {
+              virtualCurrencyName: "Gold",
+              virtualCurrencyType: "PREMIUM",
+              virtualCurrencyAmount: 100
+            }
+          }],
+          items: [{
+            item: {
+              itemName: "Golden Battle Axe",
+              itemType: "Weapon",
+              itemAmount: 1
+            }
+          }, {
+            item: {
+              itemName: "Mighty Flaming Sword of the First Age",
+              itemType: "Legendary Weapon",
+              itemAmount: 1
+            }
+          }, {
+            item: {
+              itemName: "Jewel Encrusted Shield",
+              itemType: "Armour",
+              itemAmount: 1
+            }
+          }]
+        },
+        productsSpent: {
+          realCurrency: {
+            realCurrencyType: "USD",
+            realCurrencyAmount: 499
           }
+        }
       }
     };
     recordEvent(event);
