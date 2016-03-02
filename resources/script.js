@@ -16,16 +16,28 @@ function generateUUID() {
   });
 }
 
+function getTimestamp() {
+  //return a timestamp in the format 2016-03-01 20:26:50.148 and in UTC
+  var d = new Date();
+  return d.getUTCFullYear()+
+  '-'+(d.getUTCMonth()+1)+'-'+d.getUTCDate()+
+  ' '+d.getUTCHours()+':'+d.getUTCMinutes()+
+  ':'+d.getUTCSeconds()+'.'+d.getUTCMilliseconds();
+}
+
+//set the var sendEventList to represent the debounce function
+//the debounce underscore function makes the code only to be executed every 500 ms, this prevents bashing the send event button to be a problem.
 var sendEventList = _.debounce(function() {
   if (eventList.length == 0) {
     console.log('No events to send');
     return;
   }
+  //When there are events to send we copy the eventlist to the recordedevents parameter and clear the eventList
   var recordedEvents = $.extend([], eventList);
   eventList = [];
 
   console.log('Sending events: ', recordedEvents);
-
+  //actually send the events
   $.ajax({
     type: 'POST',
     url: url,
@@ -41,23 +53,28 @@ var sendEventList = _.debounce(function() {
       console.log('Error sending events, will retry on next sendEvents()', arguments)
     }
   });
-}, 500);
+}, 500)
 
+//The defaults for the event
 function getDefaults() {
   return {
     userID: getUser(),
     sessionID: getSession(),
+    eventTimestamp: getTimestamp(),
     eventParams: {
       platform: 'WEB'
     }
   };
 }
 
+//Record an event and place it in the list of events to send
 function recordEvent(event) {
+  //fetch the default event parameters and copy this to the event to record
   event = $.extend(true, getDefaults(), event);
   eventList.push(event);
 
   console.log('Recording event ' + event.eventName);
+  console.log(JSON.stringify(event));
 }
 
 function getUser() {
@@ -65,6 +82,7 @@ function getUser() {
   var userID = localStorage.getItem('userID');
 
   if (userID === null) {
+    //Since the userID was null this must be the first time the game is started so we create a new userID:
     console.log('New user generated');
     userID = generateUUID();
     localStorage.setItem('userID', userID);
@@ -77,20 +95,37 @@ function getUser() {
 }
 
 function getSession() {
+  function getTimeZoneOffsetString(){
+    tzo = ((new Date).getTimezoneOffset()/60*-1)
+    if (tzo>=0){
+      return '+'+tzo;
+    }
+    return tzo.toString();
+  }
   var sessionID = sessionStorage.getItem('sessionID');
 
   if (sessionID === null) {
+    //if the sessionID was equal to null we need to create a new session
     console.log('New session generated');
     sessionID = generateUUID();
     sessionStorage.setItem('sessionID', sessionID);
 
     // Record clientDevice and gameStarted event since we start a new session
     recordEvent({
-      eventName: 'clientDevice'
+      eventName: 'gameStarted',
+      eventParams:{
+        clientVersion: 'v0.1'
+      }
     });
     recordEvent({
-      eventName: 'gameStarted'
+      eventName: 'clientDevice',
+      eventParams: {
+        //getTimezoneOffset in hours GMT +2 would result in 2
+        //todo, make this work
+        //timezoneOffset: getTimeZoneOffsetString()
+      }
     });
+
   }
 
   return sessionID;
@@ -107,7 +142,7 @@ function startDDNA() {
 }
 
 $(document).ready(function() {
-
+  //Some jQuery to add listerners to the click function on the buttons.
   $('#StartDDNA').click(function() {
     startDDNA();
   });
@@ -143,6 +178,7 @@ $(document).ready(function() {
       eventParams: {
         action: "purchase",
         transactionName: "IAP - Large Treasure Chest",
+        transactionType: "PURCHASE",
         productID: "4019",
         productsReceived: {
           virtualCurrencies: [{

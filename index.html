@@ -15,12 +15,12 @@
     <a href="https://deltadna.com"><img src="resources/images/deltadna_www@1x.png"></a><br>
     <a href="index.html"><h1>REST API</h1></a>
     <div>Example implementation of the REST API in javascript</div><br>
-      <button  id="StartDDNA" class="btn blue" title="Hooray!">Start DeltaDNA</button>
-      <button id="RecordSimpleEvent" class="btn blue2">Simple event</button>
-      <button id="RecordComplexEvent" class="btn green">Complex event</button>
-      <button id="sendEvents" class="btn green2">Send Events</button>
-      <button id="newUser" class="btn yellow">New User</button>
-      <button id="StopSession" class="btn violet">Stop Session</button>
+      <button id="StartDDNA" class="btn blue" title="Start DeltaDNA as if a game is started, this starts a session and a new user if not already created">Start DeltaDNA</button>
+      <button id="RecordSimpleEvent" class="btn blue2" title="Records a simple event, the options event and puts it in the list of events to send">Simple event</button>
+      <button id="RecordComplexEvent" class="btn green" title="Records a complex event, the transaction event and puts it in the list of events to send. This event has nested objects and arrays.">Complex event</button>
+      <button id="sendEvents" class="btn green2" title="Send all recorded events and clear the list.">Send Events</button>
+      <button id="newUser" class="btn yellow" title="Removes the stored userID so a new user will be generated next time.">New User</button>
+      <button id="StopSession" class="btn violet" title="Removes the stored sessionID so a new session will be started next time.">Stop Session</button>
       <div class="line-separator"></div>
       <div class="footer">Go to: <a href="https://deltadna.com">deltadna.com</a></div><br>
     </body>
