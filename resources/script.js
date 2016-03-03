@@ -19,14 +19,14 @@ function generateUUID() {
 function getTimestamp() {
   //return a timestamp in the format 2016-03-01 20:26:50.148 and in UTC
   var d = new Date();
-  return d.getUTCFullYear()+
-  '-'+(d.getUTCMonth()+1)+'-'+d.getUTCDate()+
-  ' '+d.getUTCHours()+':'+d.getUTCMinutes()+
-  ':'+d.getUTCSeconds()+'.'+d.getUTCMilliseconds();
+  return d.getUTCFullYear() +
+    '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() +
+    ' ' + d.getUTCHours() + ':' + d.getUTCMinutes() +
+    ':' + d.getUTCSeconds() + '.' + d.getUTCMilliseconds();
 }
 
 //set the var sendEventList to represent the debounce function
-//the debounce underscore function makes the code only to be executed every 500 ms, this prevents bashing the send event button to be a problem.
+//the debounce underscore function makes the fnction only to be executed every 500 ms, this prevents bashing the send event button to be a problem.
 var sendEventList = _.debounce(function() {
   if (eventList.length == 0) {
     console.log('No events to send');
@@ -74,6 +74,7 @@ function recordEvent(event) {
   eventList.push(event);
 
   console.log('Recording event ' + event.eventName);
+  //The following line is for debugging purposes, the console output can be input directly into the interactive event validator.
   console.log(JSON.stringify(event));
 }
 
@@ -95,13 +96,7 @@ function getUser() {
 }
 
 function getSession() {
-  function getTimeZoneOffsetString(){
-    tzo = ((new Date).getTimezoneOffset()/60*-1)
-    if (tzo>=0){
-      return '+'+tzo;
-    }
-    return tzo.toString();
-  }
+
   var sessionID = sessionStorage.getItem('sessionID');
 
   if (sessionID === null) {
@@ -113,16 +108,14 @@ function getSession() {
     // Record clientDevice and gameStarted event since we start a new session
     recordEvent({
       eventName: 'gameStarted',
-      eventParams:{
+      eventParams: {
         clientVersion: 'v0.1'
       }
     });
     recordEvent({
       eventName: 'clientDevice',
       eventParams: {
-        //getTimezoneOffset in hours GMT +2 would result in 2
-        //todo, make this work
-        //timezoneOffset: getTimeZoneOffsetString()
+        operatingSystemVersion: navigator.platform
       }
     });
 
