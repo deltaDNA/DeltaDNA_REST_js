@@ -48,8 +48,8 @@ var sendEventList = _.debounce(function() {
       console.log('Events successfully sent');
     },
     error: function() {
-      //there was an error sending the events, so we add the events back to the eventList.
-      eventList = $.extend(eventList, recordedEvents)
+      //there was an error sending the events, so we add the events back to the eventList (at the beginning).
+      eventList = $.extend(recordedEvents, eventList )
       console.log('Error sending events, will retry on next sendEvents()', arguments)
     }
   });

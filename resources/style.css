@@ -13,7 +13,7 @@ body {
   text-decoration: none;
 }
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 h1 {
   font-size: 36px;
@@ -57,8 +57,8 @@ h1 {
 }
 .line-separator {
   padding: 20px;
-  height:1px;
-  border-bottom:1px solid #E4EAEC;
+  height: 1px;
+  border-bottom: 1px solid #E4EAEC;
 }
 .footer {
   padding: 10px;

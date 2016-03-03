@@ -2,7 +2,9 @@
 A javascript example of an implementation of the DeltaDNA REST API.
 
 ## Configuration
+
 collectURL: the URL used as collect endpoint
+
 envKey: the environmentKey of the account the data is sent to.
 
 ##  Operation
