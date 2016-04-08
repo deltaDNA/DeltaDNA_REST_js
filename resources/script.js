@@ -1,8 +1,8 @@
 // Setting the URL
 var envKey = '22079697190426055695055037414340'
 var collectURL = 'http://collect4792jmprb.deltadna.net/collect/api/'
+//var collectURL = 'http://127.0.0.1:8080/';
 var url = collectURL + envKey + '/bulk';
-//var url = 'http://127.0.0.1:8080';
 console.log('URL used: ' + url);
 var eventList = [];
 
@@ -61,6 +61,7 @@ function getDefaults() {
     userID: getUser(),
     sessionID: getSession(),
     eventTimestamp: getTimestamp(),
+    eventUUID: generateUUID(),
     eventParams: {
       platform: 'WEB'
     }
