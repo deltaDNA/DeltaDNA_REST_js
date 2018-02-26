@@ -1,7 +1,6 @@
 // Setting the URL
 var envKey = '22079697190426055695055037414340'
-var collectURL = 'http://collect4792jmprb.deltadna.net/collect/api/'
-//var collectURL = 'http://127.0.0.1:8080/';
+var collectURL = 'https://collect4792jmprb.deltadna.net/collect/api/'
 var url = collectURL + envKey + '/bulk';
 console.log('URL used: ' + url);
 var eventList = [];
